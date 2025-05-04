@@ -1,12 +1,10 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardFooter } from "./ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
-import { Edit2, UserPlus, User, Mail, MapPin, Calendar } from "lucide-react";
+import { Edit2 , Mail } from "lucide-react";
 import CreatePost from "./CreatePost";
 
 const ProfileSidebar = () => {

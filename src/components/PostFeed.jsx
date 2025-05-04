@@ -4,7 +4,6 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPosts } from '../redux/PostSlice';
-import { Button } from './ui/button';
 import CreatePost from './CreatePost';
 
 function PostFeed({ selectedInterests , width}) {
@@ -83,11 +82,16 @@ function PostFeed({ selectedInterests , width}) {
         };
     }, [hasMore, loading]);
 
+    const handlePostDelete = (deletedPostId) => {
+        setFilteredPosts(filteredPosts.filter(post => post._id !== deletedPostId));
+        dispatch(setPosts(filteredPosts.filter(post => post._id !== deletedPostId)));
+    };
+
     return (
         <div>
             <div className={`flex flex-col gap-6 w-[${width}] mb-10`}>
                 {filteredPosts.length > 0 ? (
-                    filteredPosts.map((post) => <Postcard key={post._id} post={post} />)
+                    filteredPosts.map((post) => <Postcard key={post._id} post={post} onDelete={handlePostDelete} />)
                 ) : (
                      <div className="text-center py-12 flex flex-col items-center justify-center ">
                         <div className="bg-gray-50 rounded-lg p-8 max-w-md mx-auto">

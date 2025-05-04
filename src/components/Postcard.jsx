@@ -10,13 +10,13 @@ import {
 } from "./ui/dropdown-menu";
 import { Heart, MoreVertical } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { removePost, setPosts } from "../redux/PostSlice";
+import { setPosts } from "../redux/PostSlice";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { setAuthUser } from "@/redux/authSlice";
 
-const Postcard = ({ post }) => {
+const Postcard = ({ post , onDelete }) => {
   const { user } = useSelector((state) => state.auth);
   const { posts } = useSelector((state) => state.post);
   const [liked, setLiked] = useState(post.likes.includes(user?._id) || false);
@@ -75,25 +75,23 @@ const Postcard = ({ post }) => {
   };
 
   const deletePostHandler = async () => {
-    dispatch(removePost(post._id));
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_URL}/post/delete/${post._id}`,
         { withCredentials: true }
       );
-
+  
       if (response.data.success) {
+        onDelete(post._id);        
         toast.success("Post deleted successfully");
-        // console.log(post._id);
       } else {
         toast.error("Failed to delete post");
       }
     } catch (err) {
-      // Rollback the optimistic update if the API call fails
-      dispatch(appendPost(post));
       toast.error(err.message);
     }
   };
+  
 
   const followHandler = async () => {
     if (isLoading) return;
